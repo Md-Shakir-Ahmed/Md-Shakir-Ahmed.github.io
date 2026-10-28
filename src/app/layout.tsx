@@ -1,32 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 // ─── Font Configuration ──────────────────────────────────
 // Display/Body: Inter (clean, modern readability — Awwwards standard)
 // Fallback Body: Space Grotesk (Google Fonts, self-hosted by Next.js)
 // Mono: JetBrains Mono (code snippets, metrics, terminal labels ONLY)
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-space-grotesk",
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-jetbrains-mono",
-  weight: ["400", "500"],
-});
 
 // ─── SEO Metadata ────────────────────────────────────────
 export const metadata: Metadata = {
@@ -75,10 +53,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full`}
-    >
+    <html lang="en" className="h-full">
       <head>
         {/* Clash Display from Fontshare */}
         <link rel="preconnect" href="https://api.fontshare.com" />
@@ -88,7 +63,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         <style
           dangerouslySetInnerHTML={{
-            __html: `:root { --font-clash-display: 'Clash Display', sans-serif; }`,
+            __html: `:root { --font-clash-display: 'Clash Display', sans-serif; --font-inter: 'Inter', sans-serif; --font-space-grotesk: 'Space Grotesk', sans-serif; --font-jetbrains-mono: 'JetBrains Mono', monospace; }`,
           }}
         />
         {/* JSON-LD Structured Data */}
