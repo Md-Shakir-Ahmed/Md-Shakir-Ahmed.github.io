@@ -48,8 +48,11 @@ export default function Home() {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    const timer = setTimeout(handleScroll, 0);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [handleScroll]);
 
   const scrollToSection = (sectionId: string) => {
@@ -149,7 +152,7 @@ export default function Home() {
         </main>
 
         {/* ─── Minimal Telemetry Footer ────────────────────── */}
-        <footer className="w-full py-12 px-4 sm:px-6 md:px-8 border-t border-[var(--color-border)] bg-[var(--color-bg)] text-xs font-mono text-[var(--color-muted-dim)]">
+        <footer className="w-full py-10 pb-16 sm:py-12 px-4 sm:px-6 md:px-8 border-t border-[var(--color-border)] bg-[var(--color-bg)] text-xs font-mono text-[var(--color-muted-dim)] relative z-20">
           <div className="w-full max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-emerald)] shadow-[0_0_6px_rgba(52,211,153,0.6)]" />

@@ -7,22 +7,29 @@ import { getAssetPath } from "@/lib/assets";
 import {
   experience,
   education,
-  achievements,
   type Experience,
   type EducationItem,
-  type Achievement,
 } from "@/data/portfolio";
-import { useScrollReveal, useStaggerReveal, useTextReveal, useCountUp } from "@/lib/animations";
+import {
+  useScrollReveal,
+  useStaggerReveal,
+  useTextReveal,
+  useCountUp,
+} from "@/lib/animations";
 
 export default function ExperienceSection() {
-  const [activeExpId, setActiveExpId] = useState<string | null>(
-    "varendra-university-se"
-  );
+  // Detailed responsibilities collapsed by default for clean initial scan
+  const [activeExpId, setActiveExpId] = useState<string | null>(null);
   const [activeAchievementIndex, setActiveAchievementIndex] =
     useState<number>(0);
   const [hoveredPlatform, setHoveredPlatform] = useState<string | null>(null);
 
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+    return false;
+  });
 
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const careerRef = useRef<HTMLDivElement>(null);
@@ -40,13 +47,12 @@ export default function ExperienceSection() {
 
   useEffect(() => {
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mql.matches);
     const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
     mql.addEventListener("change", handler);
     return () => mql.removeEventListener("change", handler);
   }, []);
 
-  // Algorithm footprint platforms
+  // Algorithm footprint platform records (Preserving verified metrics & platform URLs)
   const platforms = [
     {
       id: "codeforces",
@@ -55,6 +61,7 @@ export default function ExperienceSection() {
       sub: "50+ Online Contests",
       detail:
         "Pre-Rating 909 · Participated in 50+ official rated rounds.",
+      url: "https://codeforces.com",
     },
     {
       id: "uri",
@@ -63,6 +70,7 @@ export default function ExperienceSection() {
       sub: "C, C++, Python",
       detail:
         "150+ problems in data structures, math & ad-hoc logic.",
+      url: "https://judge.beecrowd.com",
     },
     {
       id: "uva",
@@ -71,6 +79,7 @@ export default function ExperienceSection() {
       sub: "Graph & DP",
       detail:
         "70+ classical algorithmic problems focused on graph theory.",
+      url: "https://onlinejudge.org",
     },
     {
       id: "lightoj",
@@ -79,6 +88,7 @@ export default function ExperienceSection() {
       sub: "Combinatorics",
       detail:
         "60+ problem submissions in number theory and dynamic programming.",
+      url: "https://lightoj.com",
     },
   ];
 
@@ -87,6 +97,7 @@ export default function ExperienceSection() {
     {
       id: "vupc-pres",
       label: "CLUB LEADERSHIP",
+      shortLabel: "VUPC President",
       title: "President, Varendra University Programming Club",
       category: "Leadership",
       year: "2022 — 2023",
@@ -98,6 +109,7 @@ export default function ExperienceSection() {
     {
       id: "icpc-regional",
       label: "ICPC REGIONAL",
+      shortLabel: "ICPC Regional",
       title: "ICPC Regional Contestant (4+ Onsite Competitions)",
       category: "Competitive Programming",
       year: "2020",
@@ -109,6 +121,7 @@ export default function ExperienceSection() {
     {
       id: "intra-univ",
       label: "CONTEST CHAMPION",
+      shortLabel: "Intra Champion",
       title: "Champion, Intra University Programming Contest",
       category: "Contest Champion",
       year: "2021",
@@ -120,6 +133,7 @@ export default function ExperienceSection() {
     {
       id: "it-quiz",
       label: "IT & TECH FEST",
+      shortLabel: "IT Quiz Champion",
       title: "Champion, IT QUIZ 2022 & Project Showcase",
       category: "Honors",
       year: "2020, 2022",
@@ -131,6 +145,7 @@ export default function ExperienceSection() {
     {
       id: "debate-robo",
       label: "DEBATE & ROBOTICS",
+      shortLabel: "Robo & Debate",
       title: "Runner-up Tech Debate 2022 & Robo Soccer Champion",
       category: "Co-curricular",
       year: "2020, 2022",
@@ -145,47 +160,92 @@ export default function ExperienceSection() {
     constellationNodes[activeAchievementIndex] || constellationNodes[0];
 
   return (
-    <div className="w-full text-[var(--color-text)] flex flex-col gap-24 sm:gap-32">
+    <div className="w-full text-[var(--color-text)] flex flex-col gap-20 sm:gap-28">
       {/* ─── SECTION HEADER ─── */}
       <div>
         <span
           className="font-mono text-xs text-[var(--color-primary)] tracking-widest uppercase block mb-3"
           style={{ letterSpacing: "0.15em" }}
         >
-          // TRAJECTORY & ALGORITHMIC FOUNDATION
+          {"// TRAJECTORY & ALGORITHMIC FOUNDATION"}
         </span>
         <h2
           ref={headlineRef}
-          className="text-[var(--color-text)] font-extrabold tracking-tight max-w-3xl"
+          className="text-[var(--color-text)] font-extrabold tracking-tight max-w-2xl"
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "clamp(2rem, 5vw, 3.5rem)",
-            lineHeight: 1.1,
-            letterSpacing: "-0.03em",
+            fontSize: "clamp(1.875rem, 3.5vw, 2.5rem)",
+            lineHeight: 1.25,
+            letterSpacing: "-0.02em",
             perspective: "600px",
           }}
         >
-          <span className="word inline-block" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", opacity: 0 }}>Career</span>{" "}
-          <span className="word inline-block" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", opacity: 0 }}>path,</span>{" "}
-          <span className="word inline-block" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", opacity: 0 }}>academics</span>{" "}
-          <span className="word inline-block" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", opacity: 0 }}>&</span>{" "}
-          <span className="word inline-block text-gradient" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", opacity: 0 }}>algorithmic&nbsp;footprint.</span>
+          <span
+            className="word inline-block"
+            style={{
+              willChange: "transform, opacity",
+              transformOrigin: "center bottom",
+              opacity: 0,
+            }}
+          >
+            Career
+          </span>{" "}
+          <span
+            className="word inline-block"
+            style={{
+              willChange: "transform, opacity",
+              transformOrigin: "center bottom",
+              opacity: 0,
+            }}
+          >
+            path,
+          </span>{" "}
+          <span
+            className="word inline-block"
+            style={{
+              willChange: "transform, opacity",
+              transformOrigin: "center bottom",
+              opacity: 0,
+            }}
+          >
+            academics
+          </span>{" "}
+          <span
+            className="word inline-block"
+            style={{
+              willChange: "transform, opacity",
+              transformOrigin: "center bottom",
+              opacity: 0,
+            }}
+          >
+            &
+          </span>{" "}
+          <span
+            className="word inline-block text-gradient"
+            style={{
+              willChange: "transform, opacity",
+              transformOrigin: "center bottom",
+              opacity: 0,
+            }}
+          >
+            algorithmic&nbsp;footprint.
+          </span>
         </h2>
       </div>
 
-      {/* â•â•â• PART 1: EXPERIENCE — VISUAL TIMELINE â•â•â• */}
+      {/* ─── PART 1: EXPERIENCE — VISUAL TIMELINE ─── */}
       <div className="w-full">
-        <div className="flex items-center gap-4 mb-16">
+        <div className="flex items-center gap-4 mb-10 sm:mb-14">
           <span className="font-mono text-xs text-[var(--color-muted)] tracking-widest uppercase">
             01 / CAREER PATH
           </span>
           <div className="flex-1 h-px bg-[rgba(255,255,255,0.08)]" />
         </div>
 
-        {/* Vertical Career Path with Traveling Signal Spine */}
-        <div ref={careerRef} className="relative pl-8 sm:pl-16 md:pl-24">
+        {/* Vertical Career Path with Aligned Rail & Node Coordinates */}
+        <div ref={careerRef} className="relative">
           {/* Continuous Vertical Signal Rail */}
-          <div className="absolute left-2 sm:left-4 md:left-6 top-4 bottom-4 w-px bg-gradient-to-b from-[var(--color-primary)] via-[rgba(255,255,255,0.1)] to-transparent">
+          <div className="absolute left-[15px] sm:left-[21px] top-3 bottom-3 w-[2px] bg-gradient-to-b from-[var(--color-primary)]/40 via-[rgba(255,255,255,0.08)] to-transparent pointer-events-none">
             {/* Animated traveling signal pulse */}
             {!reducedMotion && (
               <motion.div
@@ -195,65 +255,62 @@ export default function ExperienceSection() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="w-1.5 h-16 -left-[2px] absolute bg-gradient-to-b from-transparent via-[var(--color-primary)] to-transparent"
+                className="w-[2px] h-14 absolute bg-gradient-to-b from-transparent via-[var(--color-primary)] to-transparent"
                 style={{ filter: "blur(1px)" }}
               />
             )}
           </div>
 
-          <div className="space-y-20 sm:space-y-28">
-            {experience.map((exp, idx) => {
+          <div className="space-y-12 sm:space-y-16">
+            {experience.map((exp: Experience) => {
               const isExpanded = activeExpId === exp.id;
 
               return (
-                <div key={exp.id} className="career-item relative group" style={{ opacity: 0 }}>
-                  {/* Station Node on Career Path */}
-                  <div
+                <div
+                  key={exp.id}
+                  className="career-item relative pl-10 sm:pl-14 group"
+                  style={{ opacity: 0 }}
+                >
+                  {/* Station Node on Career Path (Mathematically centered on rail) */}
+                  <button
+                    type="button"
                     onClick={() =>
                       setActiveExpId(isExpanded ? null : exp.id)
                     }
-                    className="absolute -left-[29px] sm:-left-[45px] md:-left-[53px] top-2 cursor-pointer z-10"
+                    className="absolute left-[16px] sm:left-[22px] -translate-x-1/2 top-2 cursor-pointer z-10 p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] rounded-full transition-transform active:scale-95"
                     aria-label={`Toggle details for ${exp.company}`}
+                    aria-expanded={isExpanded}
                   >
                     <div
-                      className={`w-4 h-4 rounded-full transition-all duration-500 flex items-center justify-center ${exp.current
-                          ? "bg-[var(--color-bg)] border-2 border-[var(--color-primary)] shadow-[0_0_16px_var(--color-primary-glow)] scale-110"
-                          : "bg-[var(--color-bg)] border border-[rgba(255,255,255,0.3)] group-hover:border-[var(--color-primary)] group-hover:shadow-[0_0_8px_var(--color-primary-glow)]"
-                        }`}
+                      className={`w-3.5 h-3.5 rounded-full transition-all duration-300 flex items-center justify-center ${
+                        exp.current
+                          ? "bg-[var(--color-bg)] border-2 border-[var(--color-primary)] shadow-[0_0_8px_var(--color-primary-glow)]"
+                          : "bg-[var(--color-bg)] border border-[rgba(255,255,255,0.3)] group-hover:border-[var(--color-primary)]"
+                      }`}
                     >
-                      {exp.current && (
+                      {exp.current ? (
                         <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] animate-pulse" />
+                      ) : (
+                        <div className="w-1 h-1 rounded-full bg-white/40 group-hover:bg-[var(--color-primary)]" />
                       )}
                     </div>
-                  </div>
+                  </button>
 
-                  {/* Main Company Milestone Presentation */}
+                  {/* ─── Clear 5-Level Milestone Hierarchy ─── */}
                   <div>
-                    {/* Date and Location Line */}
-                    <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-[var(--color-muted)] mb-2">
-                      <span className="text-[var(--color-primary)] font-medium">
+                    {/* 1. Timeline/date and location metadata */}
+                    <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-[var(--color-muted)] mb-2">
+                      <span className="text-[var(--color-primary)] font-semibold whitespace-nowrap">
                         {exp.dates}
                       </span>
-                      <span>·</span>
-                      <span>{exp.location}</span>
-                      {exp.current && (
-                        <>
-                          <span>·</span>
-                          <span className="text-emerald-400 flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                            ACTIVE ROLE
-                          </span>
-                        </>
-                      )}
+                      <span className="text-[rgba(255,255,255,0.2)]">·</span>
+                      <span className="whitespace-nowrap">{exp.location}</span>
                     </div>
 
-                    {/* Large Typography: Company Name & Logo */}
-                    <div
-                      onClick={() => setActiveExpId(isExpanded ? null : exp.id)}
-                      className="flex items-center gap-4 cursor-pointer group mb-2"
-                    >
+                    {/* 2. Company name and logo */}
+                    <div className="flex items-center gap-3.5 mb-2 select-none">
                       {exp.logo && (
-                        <div className="relative w-12 h-12 sm:w-16 sm:h-16 shrink-0 rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.1)] shadow-[0_4px_24px_rgba(0,0,0,0.5)] group-hover:shadow-[0_4px_32px_var(--color-primary-glow)] transition-all duration-300">
+                        <div className="relative w-11 h-11 sm:w-12 sm:h-12 shrink-0 rounded-xl overflow-hidden border border-[rgba(255,255,255,0.1)] bg-[var(--color-surface)] shadow-sm">
                           <Image
                             src={getAssetPath(exp.logo)}
                             alt={`${exp.company} Logo`}
@@ -263,46 +320,53 @@ export default function ExperienceSection() {
                         </div>
                       )}
                       <h3
-                        className="text-3xl sm:text-4xl text-[var(--color-text)] font-bold group-hover:text-[var(--color-primary)] transition-colors duration-300"
+                        className="text-xl sm:text-2xl text-[var(--color-text)] font-bold tracking-tight"
                         style={{
                           fontFamily: "var(--font-display)",
-                          lineHeight: 1.1,
-                          letterSpacing: "-0.02em",
+                          lineHeight: 1.2,
+                          letterSpacing: "-0.01em",
                         }}
                       >
                         {exp.company}
                       </h3>
                     </div>
 
-                    {/* Role / Designation */}
-                    <p className="font-mono text-sm sm:text-base text-[var(--color-text-secondary)] mt-2 mb-4">
-                      {exp.title}
-                    </p>
+                    {/* 3. Job title and status */}
+                    <div className="flex flex-wrap items-center gap-2.5 mb-3">
+                      <span className="font-mono text-sm sm:text-base text-[var(--color-primary)] font-medium">
+                        {exp.title}
+                      </span>
+                      {exp.current && (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[0.6875rem] font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          ACTIVE ROLE
+                        </span>
+                      )}
+                    </div>
 
-                    {/* High-level Summary Statement */}
-                    <p className="text-[var(--color-muted)] text-base sm:text-lg max-w-3xl leading-relaxed mb-4">
+                    {/* 4. Short responsibility summary (Controlled reading measure) */}
+                    <p className="text-[var(--color-muted)] text-sm sm:text-base max-w-[65ch] leading-relaxed mb-3.5">
                       {exp.summary}
                     </p>
 
-                    {/* Interactive Reveal Toggle */}
+                    {/* 5. Expandable detailed responsibilities */}
                     <button
+                      type="button"
                       onClick={() =>
                         setActiveExpId(isExpanded ? null : exp.id)
                       }
+                      aria-expanded={isExpanded}
+                      aria-controls={`exp-details-${exp.id}`}
                       data-magnetic
-                      className="font-mono text-xs text-[var(--color-primary)] hover:text-[var(--color-text)] transition-colors cursor-pointer inline-flex items-center gap-2 mb-4 group/btn"
-                      style={{
-                        fontSize: "0.75rem",
-                        letterSpacing: "0.08em",
-                      }}
+                      className="font-mono text-xs text-[var(--color-primary)] hover:text-white transition-colors cursor-pointer inline-flex items-center gap-2 py-1 px-2.5 rounded-md border border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/40 bg-[var(--color-primary)]/5 hover:bg-[var(--color-primary)]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] group/btn"
                     >
                       <span>
                         {isExpanded
-                          ? "[ HIDE RESPONSIBILITIES ]"
-                          : "[ VIEW VERIFIED SCOPE & WORK ]"}
+                          ? "[ HIDE DETAILED RESPONSIBILITIES ]"
+                          : "[ VIEW DETAILED RESPONSIBILITIES ]"}
                       </span>
-                      <span className="text-xs transition-transform duration-300 group-hover/btn:translate-x-1">
-                        {isExpanded ? "▲" : "→"}
+                      <span className="text-[0.6875rem] transition-transform duration-200 group-hover/btn:translate-x-0.5">
+                        {isExpanded ? "▲" : "▼"}
                       </span>
                     </button>
 
@@ -310,25 +374,29 @@ export default function ExperienceSection() {
                     <AnimatePresence>
                       {isExpanded && (
                         <motion.div
+                          id={`exp-details-${exp.id}`}
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: "auto" }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{
-                            duration: 0.4,
-                            ease: [0.16, 1, 0.3, 1] as const,
+                            duration: 0.3,
+                            ease: [0.16, 1, 0.3, 1],
                           }}
                           className="overflow-hidden"
                         >
-                          <div className="pt-4 pb-6 space-y-5 max-w-3xl border-l-2 border-[rgba(59,130,246,0.3)] pl-6 my-2">
+                          <div className="pt-3.5 pb-2 space-y-3 max-w-[65ch] border-l-2 border-[var(--color-primary)]/30 pl-4 sm:pl-5 my-2.5">
                             {exp.responsibilities.map((resp, i) => (
                               <motion.div
                                 key={i}
-                                initial={{ opacity: 0, x: -10 }}
+                                initial={{ opacity: 0, x: -6 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: i * 0.1, duration: 0.4 }}
-                                className="flex items-start gap-4 text-sm sm:text-base text-[var(--color-text-secondary)] leading-loose"
+                                transition={{
+                                  delay: i * 0.06,
+                                  duration: 0.25,
+                                }}
+                                className="flex items-start gap-2.5 text-sm text-[var(--color-text-secondary)] leading-relaxed"
                               >
-                                <span className="text-[var(--color-primary)] font-mono text-xs mt-1.5 shrink-0 opacity-80 bg-[var(--color-primary)]/10 px-1.5 py-0.5 rounded">
+                                <span className="text-[var(--color-primary)] font-mono text-[0.6875rem] mt-0.5 shrink-0 bg-[var(--color-primary)]/10 px-1.5 py-0.5 rounded font-bold">
                                   0{i + 1}
                                 </span>
                                 <span>{resp}</span>
@@ -336,11 +404,14 @@ export default function ExperienceSection() {
                             ))}
 
                             {/* Tech Stack tags */}
-                            <div className="flex flex-wrap gap-2.5 pt-6 mt-2 border-t border-[rgba(255,255,255,0.05)]">
+                            <div className="flex flex-wrap items-center gap-2 pt-3 mt-3 border-t border-[rgba(255,255,255,0.06)]">
+                              <span className="font-mono text-[0.6875rem] uppercase text-[var(--color-muted-dim)] mr-1">
+                                STACK:
+                              </span>
                               {exp.technologies.map((t) => (
                                 <span
                                   key={t}
-                                  className="font-mono text-xs text-[var(--color-muted)] bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] px-2.5 py-1 rounded-md"
+                                  className="font-mono text-xs text-[var(--color-muted)] bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.08)] px-2.5 py-0.5 rounded-md"
                                 >
                                   {t}
                                 </span>
@@ -358,98 +429,83 @@ export default function ExperienceSection() {
         </div>
       </div>
 
-      {/* â•â•â• PART 2: EDUCATION — EDITORIAL LAYOUT â•â•â• */}
+      {/* ─── PART 2: EDUCATION — EDITORIAL LAYOUT ─── */}
       <div className="w-full">
-        <div className="flex items-center gap-4 mb-16">
+        <div className="flex items-center gap-4 mb-10 sm:mb-14">
           <span className="font-mono text-xs text-[var(--color-muted)] tracking-widest uppercase">
             02 / ACADEMIC MILESTONES
           </span>
           <div className="flex-1 h-px bg-[rgba(255,255,255,0.08)]" />
         </div>
 
-        <div ref={eduRef} className="space-y-16 sm:space-y-20">
-          {education.map((edu, idx) => (
-            <div key={edu.id} className="edu-item relative group" style={{ opacity: 0 }}>
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-baseline">
-                {/* Large Milestone Number */}
-                <div className="lg:col-span-2">
-                  <span className="font-mono text-3xl sm:text-4xl lg:text-5xl text-[rgba(255,255,255,0.1)] font-bold group-hover:text-[var(--color-primary)] transition-colors duration-500">
+        <div ref={eduRef} className="space-y-8 sm:space-y-10">
+          {education.map((edu: EducationItem, idx: number) => (
+            <div
+              key={edu.id}
+              className="edu-item relative group"
+              style={{ opacity: 0 }}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-start">
+                {/* Milestone Index */}
+                <div className="md:col-span-1 pt-0.5">
+                  <span className="font-mono text-2xl sm:text-3xl font-bold text-[rgba(255,255,255,0.15)] group-hover:text-[var(--color-primary)] transition-colors duration-300 select-none">
                     0{idx + 1}
                   </span>
                 </div>
 
-                {/* Degree & Department */}
-                <div className="lg:col-span-6">
+                {/* Degree, Department & Highlights */}
+                <div className="md:col-span-7 lg:col-span-8 max-w-[55ch]">
                   <h3
-                    className="text-[var(--color-text)] font-bold mb-2 tracking-tight"
+                    className="text-[var(--color-text)] font-bold mb-1 tracking-tight"
                     style={{
                       fontFamily: "var(--font-display)",
-                      fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)",
-                      lineHeight: 1.15,
+                      fontSize: "clamp(1.125rem, 1.8vw, 1.45rem)",
+                      lineHeight: 1.35,
                     }}
                   >
                     {edu.degree}
                   </h3>
-                  <p className="font-mono text-xs sm:text-sm text-[var(--color-primary)] uppercase tracking-wider mb-4">
+                  <p className="font-mono text-xs text-[var(--color-primary)] uppercase tracking-wider mb-2.5 font-medium">
                     {edu.department}
                   </p>
-                  <div className="space-y-1 text-sm text-[var(--color-muted)] leading-relaxed">
+                  <div className="space-y-1.5 text-sm text-[var(--color-text-secondary)] leading-relaxed">
                     {edu.highlights.map((h, i) => (
-                      <p key={i}>— {h}</p>
+                      <div key={i} className="flex items-start gap-2">
+                        <span className="text-[var(--color-primary)]/60 text-xs mt-0.5 shrink-0 select-none">
+                          ▸
+                        </span>
+                        <span>{h}</span>
+                      </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Institution & Timeframe */}
-                <div className="lg:col-span-4 flex flex-col lg:items-end text-left lg:text-right">
+                {/* Institution & Completion Badge */}
+                <div className="md:col-span-4 lg:col-span-3 flex flex-col md:items-end text-left md:text-right gap-1.5 pt-0.5">
                   <span
-                    className="text-base sm:text-lg text-[var(--color-text-secondary)] font-medium mb-3"
+                    className="text-sm sm:text-base font-semibold text-[var(--color-text)] tracking-tight"
                     style={{ fontFamily: "var(--font-body)" }}
                   >
                     {edu.institution}
                   </span>
-                  <span
-                    className="font-mono text-xs px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5 border"
-                    style={{
-                      backgroundColor:
-                        edu.status === "Completed"
-                          ? "rgba(16, 185, 129, 0.08)"
-                          : "rgba(59, 130, 246, 0.08)",
-                      borderColor:
-                        edu.status === "Completed"
-                          ? "rgba(16, 185, 129, 0.25)"
-                          : "rgba(59, 130, 246, 0.25)",
-                      color:
-                        edu.status === "Completed" ? "#34D399" : "#60A5FA",
-                    }}
-                  >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full"
-                      style={{
-                        backgroundColor:
-                          edu.status === "Completed" ? "#10B981" : "#3B82F6",
-                        boxShadow:
-                          edu.status === "Completed"
-                            ? "0 0 6px rgba(16, 185, 129, 0.5)"
-                            : "0 0 6px rgba(59, 130, 246, 0.5)",
-                      }}
-                    />
+                  <span className="font-mono text-xs px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5 border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 w-fit">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                     {edu.status}
                   </span>
                 </div>
               </div>
 
               {idx < education.length - 1 && (
-                <div className="w-full h-px bg-gradient-to-r from-[rgba(255,255,255,0.1)] via-[rgba(255,255,255,0.05)] to-transparent mt-16 sm:mt-20" />
+                <div className="w-full h-px bg-[rgba(255,255,255,0.06)] mt-8 sm:mt-10" />
               )}
             </div>
           ))}
         </div>
       </div>
 
-      {/* â•â•â• PART 3: COMPETITIVE PROGRAMMING — ALGORITHMIC FOOTPRINT â•â•â• */}
+      {/* ─── PART 3: COMPETITIVE PROGRAMMING — ALGORITHMIC FOOTPRINT ─── */}
       <div className="w-full">
-        <div className="flex items-center gap-4 mb-16">
+        <div className="flex items-center gap-4 mb-10 sm:mb-14">
           <span className="font-mono text-xs text-[var(--color-muted)] tracking-widest uppercase">
             03 / ALGORITHMIC FOOTPRINT
           </span>
@@ -458,71 +514,35 @@ export default function ExperienceSection() {
 
         <div
           ref={algoRef}
-          className="relative py-12 sm:py-20 px-6 sm:px-12 rounded-3xl bg-[var(--color-surface)] border border-[var(--color-border)] overflow-hidden"
+          className="relative py-8 sm:py-12 px-5 sm:px-8 rounded-3xl bg-[var(--color-surface)] border border-[var(--color-border)] overflow-hidden"
           style={{ opacity: 0 }}
         >
-          {/* Subtle Background Radial Aura */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-25"
-            style={{
-              background:
-                "radial-gradient(circle at center, rgba(59,130,246,0.2) 0%, transparent 65%)",
-              filter: "blur(60px)",
-            }}
-          />
-
-          {/* SVG Connection Lines */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none select-none z-0">
-            {[
-              { x2: "20%", y2: "25%", id: "codeforces" },
-              { x2: "80%", y2: "28%", id: "uri" },
-              { x2: "22%", y2: "78%", id: "uva" },
-              { x2: "78%", y2: "75%", id: "lightoj" },
-            ].map((line) => (
-              <line
-                key={line.id}
-                x1="50%"
-                y1="50%"
-                x2={line.x2}
-                y2={line.y2}
-                stroke={
-                  hoveredPlatform === line.id
-                    ? "#3B82F6"
-                    : "rgba(255,255,255,0.08)"
-                }
-                strokeWidth={hoveredPlatform === line.id ? "2" : "1"}
-                strokeDasharray="4 4"
-                className="transition-all duration-500"
-              />
-            ))}
-          </svg>
-
-          {/* Center Hub: 300+ Counter */}
-          <div className="relative z-10 text-center my-8 sm:my-12">
+          {/* Center Hub: 300+ Counter (Primary Visual Anchor) */}
+          <div className="relative z-10 text-center my-2 sm:my-4">
             <div
-              className="font-extrabold text-[var(--color-text)] tracking-tighter"
+              className="font-extrabold text-[var(--color-text)] tracking-tight"
               style={{
                 fontFamily: "var(--font-display)",
-                fontSize: "clamp(4.5rem, 12vw, 8.5rem)",
-                lineHeight: 0.9,
+                fontSize: "clamp(3.5rem, 7vw, 5rem)",
+                lineHeight: 1,
               }}
             >
               <span ref={counterRef}>0</span>
             </div>
             <p
-              className="font-mono text-xs sm:text-sm tracking-widest text-[var(--color-muted)] uppercase mt-4"
-              style={{ letterSpacing: "0.2em" }}
+              className="font-mono text-xs sm:text-sm tracking-widest text-[var(--color-primary)] font-semibold uppercase mt-3"
+              style={{ letterSpacing: "0.15em" }}
             >
               ALGORITHMIC PROBLEMS SOLVED
             </p>
-            <p className="text-xs text-[var(--color-muted-dim)] max-w-md mx-auto mt-2">
-              Competitive programming across international online judges building
-              core algorithmic efficiency and deterministic thinking.
+            <p className="text-xs sm:text-sm text-[var(--color-muted)] max-w-lg mx-auto mt-2 leading-relaxed">
+              Competitive programming across international online judges building core
+              algorithmic efficiency, discrete math models, and deterministic thinking.
             </p>
           </div>
 
-          {/* Platform Nodes */}
-          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-6 border-t border-[rgba(255,255,255,0.06)]">
+          {/* Platform Cards in Clean Responsive Grid */}
+          <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 pt-8 sm:pt-10 mt-8 sm:mt-10 border-t border-[rgba(255,255,255,0.06)]">
             {platforms.map((p) => {
               const isHovered = hoveredPlatform === p.id;
               return (
@@ -530,27 +550,50 @@ export default function ExperienceSection() {
                   key={p.id}
                   onMouseEnter={() => setHoveredPlatform(p.id)}
                   onMouseLeave={() => setHoveredPlatform(null)}
-                  className="flex flex-col items-center sm:items-start text-center sm:text-left cursor-pointer transition-all duration-300 group"
+                  className="p-5 sm:p-6 rounded-2xl bg-[var(--color-bg)]/80 border border-[rgba(255,255,255,0.08)] hover:border-[var(--color-primary)]/40 transition-colors duration-200 flex flex-col justify-between group"
                 >
-                  <div className="flex items-center gap-2 mb-1">
-                    <span
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${isHovered
-                          ? "bg-[var(--color-primary)] shadow-[0_0_12px_var(--color-primary-glow)] scale-150"
-                          : "bg-[rgba(255,255,255,0.2)]"
-                        }`}
-                    />
-                    <span className="font-mono text-xs text-[var(--color-text)] font-semibold">
-                      {p.name}
-                    </span>
+                  <div>
+                    {/* Platform Name & Record Link */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`w-2 h-2 rounded-full transition-colors duration-200 ${
+                            isHovered
+                              ? "bg-[var(--color-primary)]"
+                              : "bg-[rgba(255,255,255,0.25)]"
+                          }`}
+                        />
+                        <span className="font-mono text-xs text-[var(--color-text)] font-semibold">
+                          {p.name}
+                        </span>
+                      </div>
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Visit ${p.name}`}
+                        className="font-mono text-[0.6875rem] text-[var(--color-primary)] hover:text-white flex items-center gap-1 transition-colors px-1.5 py-0.5 rounded bg-[var(--color-primary)]/10 hover:bg-[var(--color-primary)]/20"
+                      >
+                        <span>RECORD</span>
+                        <span className="text-[0.625rem]">↗</span>
+                      </a>
+                    </div>
+
+                    {/* Primary Solved / Rating Metric */}
+                    <div className="font-mono text-xl sm:text-2xl text-[var(--color-primary)] font-bold tracking-tight my-1.5">
+                      {p.stat}
+                    </div>
+
+                    {/* Languages / Topic Tag */}
+                    <div className="font-mono text-xs text-[var(--color-text-secondary)] mb-3 font-medium">
+                      {p.sub}
+                    </div>
                   </div>
 
-                  <span className="font-mono text-sm sm:text-base text-[var(--color-primary)] font-bold">
-                    {p.stat}
-                  </span>
-
-                  <span className="text-xs text-[var(--color-muted)] mt-1">
+                  {/* Concise Description */}
+                  <p className="text-xs text-[var(--color-muted)] leading-relaxed pt-2.5 border-t border-[rgba(255,255,255,0.04)]">
                     {p.detail}
-                  </span>
+                  </p>
                 </div>
               );
             })}
@@ -558,119 +601,232 @@ export default function ExperienceSection() {
         </div>
       </div>
 
-      {/* â•â•â• PART 4: LEADERSHIP & ACHIEVEMENTS — CONSTELLATION â•â•â• */}
+      {/* ─── PART 4: LEADERSHIP & ACHIEVEMENTS — CONSTELLATION ─── */}
       <div ref={constRef} className="w-full" style={{ opacity: 0 }}>
-        <div className="flex items-center gap-4 mb-16">
+        <div className="flex items-center gap-4 mb-10 sm:mb-14">
           <span className="font-mono text-xs text-[var(--color-muted)] tracking-widest uppercase">
-            04 / LEADERSHIP & HONORS CONSTELLATION
+            04 / LEADERSHIP & HONORS
           </span>
           <div className="flex-1 h-px bg-[rgba(255,255,255,0.08)]" />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          {/* Left: Constellation Visual Graph */}
-          <div className="lg:col-span-7 relative h-[360px] sm:h-[400px] w-full rounded-3xl bg-[var(--color-surface)] border border-[var(--color-border)] overflow-hidden flex items-center justify-center p-4">
-            <svg
-              viewBox="0 0 440 380"
-              className="w-full h-full select-none"
-            >
-              <defs>
-                <radialGradient id="hub-glow" cx="50%" cy="50%" r="50%">
-                  <stop
-                    offset="0%"
-                    stopColor="#3B82F6"
-                    stopOpacity="0.3"
-                  />
-                  <stop
-                    offset="100%"
-                    stopColor="#3B82F6"
-                    stopOpacity="0"
-                  />
-                </radialGradient>
-                <filter id="constellation-glow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="3" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          {/* Left: Constellation Visual Graph (Desktop & Tablet) */}
+          <div className="lg:col-span-7 relative h-[360px] sm:h-[390px] w-full rounded-3xl bg-[var(--color-surface)] border border-[var(--color-border)] overflow-hidden flex flex-col justify-between p-4 sm:p-6">
+            {/* Desktop SVG Visual Graph */}
+            <div className="hidden sm:flex flex-1 items-center justify-center relative">
+              <svg
+                viewBox="0 0 440 380"
+                className="w-full h-full select-none max-h-[300px]"
+              >
+                <defs>
+                  <radialGradient id="hub-glow-lead" cx="50%" cy="50%" r="50%">
+                    <stop
+                      offset="0%"
+                      stopColor="#38BDF8"
+                      stopOpacity="0.3"
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor="#38BDF8"
+                      stopOpacity="0"
+                    />
+                  </radialGradient>
+                </defs>
 
-              {/* Connecting lines */}
-              <line x1="180" y1="80" x2="340" y2="110" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="3 3" />
-              <line x1="180" y1="80" x2="80" y2="200" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="3 3" />
-              <line x1="80" y1="200" x2="160" y2="320" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="3 3" />
-              <line x1="340" y1="110" x2="270" y2="240" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="3 3" />
-              <line x1="270" y1="240" x2="160" y2="320" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="3 3" />
-              <line x1="80" y1="200" x2="270" y2="240" stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="2 4" />
+                {/* Connecting lines */}
+                <line
+                  x1="180"
+                  y1="80"
+                  x2="340"
+                  y2="110"
+                  stroke="rgba(255,255,255,0.08)"
+                  strokeWidth="1"
+                  strokeDasharray="3 3"
+                />
+                <line
+                  x1="180"
+                  y1="80"
+                  x2="80"
+                  y2="200"
+                  stroke="rgba(255,255,255,0.08)"
+                  strokeWidth="1"
+                  strokeDasharray="3 3"
+                />
+                <line
+                  x1="80"
+                  y1="200"
+                  x2="160"
+                  y2="320"
+                  stroke="rgba(255,255,255,0.08)"
+                  strokeWidth="1"
+                  strokeDasharray="3 3"
+                />
+                <line
+                  x1="340"
+                  y1="110"
+                  x2="270"
+                  y2="240"
+                  stroke="rgba(255,255,255,0.08)"
+                  strokeWidth="1"
+                  strokeDasharray="3 3"
+                />
+                <line
+                  x1="270"
+                  y1="240"
+                  x2="160"
+                  y2="320"
+                  stroke="rgba(255,255,255,0.08)"
+                  strokeWidth="1"
+                  strokeDasharray="3 3"
+                />
+                <line
+                  x1="80"
+                  y1="200"
+                  x2="270"
+                  y2="240"
+                  stroke="rgba(255,255,255,0.05)"
+                  strokeWidth="1"
+                  strokeDasharray="2 4"
+                />
 
-              {/* Constellation Nodes */}
+                {/* Constellation Nodes */}
+                {constellationNodes.map((node, index) => {
+                  const isActive = activeAchievementIndex === index;
+                  return (
+                    <g
+                      key={node.id}
+                      transform={`translate(${node.x}, ${node.y})`}
+                      className="cursor-pointer"
+                      onClick={() => setActiveAchievementIndex(index)}
+                      onMouseEnter={() => setActiveAchievementIndex(index)}
+                    >
+                      {isActive && (
+                        <circle
+                          r="24"
+                          fill="url(#hub-glow-lead)"
+                          className="animate-pulse"
+                        />
+                      )}
+
+                      <circle
+                        r={isActive ? "13" : "8"}
+                        fill="#0E1015"
+                        stroke={isActive ? "#38BDF8" : "rgba(255,255,255,0.25)"}
+                        strokeWidth={isActive ? "2" : "1"}
+                        className="transition-all duration-300"
+                      />
+
+                      <circle
+                        r={isActive ? "5" : "3"}
+                        fill={isActive ? "#38BDF8" : "rgba(255,255,255,0.5)"}
+                      />
+
+                      <text
+                        y={isActive ? "26" : "20"}
+                        textAnchor="middle"
+                        fill={isActive ? "#FFFFFF" : "rgba(255,255,255,0.4)"}
+                        fontSize={isActive ? "10" : "8"}
+                        fontFamily="var(--font-mono)"
+                        letterSpacing="0.08em"
+                        className="transition-all duration-200 select-none"
+                      >
+                        {node.label}
+                      </text>
+                    </g>
+                  );
+                })}
+              </svg>
+            </div>
+
+            {/* Mobile-Friendly List Selector (Clean touch targets) */}
+            <div className="flex sm:hidden flex-col justify-center space-y-2 flex-1">
+              <span className="font-mono text-[0.6875rem] text-[var(--color-primary)] uppercase tracking-wider mb-1">
+                SELECT MILESTONE:
+              </span>
               {constellationNodes.map((node, index) => {
                 const isActive = activeAchievementIndex === index;
                 return (
-                  <g
+                  <button
                     key={node.id}
-                    transform={`translate(${node.x}, ${node.y})`}
-                    className="cursor-pointer"
+                    type="button"
                     onClick={() => setActiveAchievementIndex(index)}
-                    onMouseEnter={() => setActiveAchievementIndex(index)}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left font-mono text-xs transition-colors ${
+                      isActive
+                        ? "bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/40 text-white font-bold"
+                        : "bg-[var(--color-bg)]/40 border border-white/5 text-[var(--color-muted)] hover:text-white"
+                    }`}
                   >
-                    {isActive && (
-                      <circle
-                        r="24"
-                        fill="url(#hub-glow)"
-                        className="animate-pulse"
-                      />
-                    )}
-
-                    <circle
-                      r={isActive ? "14" : "9"}
-                      fill="#0A0A10"
-                      stroke={isActive ? "#3B82F6" : "rgba(255,255,255,0.25)"}
-                      strokeWidth={isActive ? "2" : "1"}
-                      filter={isActive ? "url(#constellation-glow)" : undefined}
-                      className="transition-all duration-300"
-                    />
-
-                    <circle
-                      r={isActive ? "5" : "3"}
-                      fill={isActive ? "#60A5FA" : "rgba(255,255,255,0.5)"}
-                    />
-
-                    <text
-                      y={isActive ? "28" : "22"}
-                      textAnchor="middle"
-                      fill={isActive ? "#FFFFFF" : "rgba(255,255,255,0.35)"}
-                      fontSize={isActive ? "10" : "8"}
-                      fontFamily="var(--font-mono)"
-                      letterSpacing="0.08em"
-                      className="transition-all duration-200"
-                    >
-                      {node.label}
-                    </text>
-                  </g>
+                    <span>{node.shortLabel}</span>
+                    <span className="text-[0.6875rem] opacity-75">{node.year}</span>
+                  </button>
                 );
               })}
-            </svg>
+            </div>
 
-            <span className="absolute bottom-3 left-4 font-mono text-[0.625rem] text-[var(--color-muted-dim)]">
-              // HOVER OR TAP NODES TO INSPECT
-            </span>
+            <div className="flex items-center justify-between pt-2 border-t border-[rgba(255,255,255,0.06)]">
+              <span className="font-mono text-[0.625rem] text-[var(--color-muted-dim)]">
+                {"// HOVER OR CLICK NODES TO INSPECT"}
+              </span>
+              <span className="font-mono text-[0.625rem] text-[var(--color-primary)]">
+                {activeAchievementIndex + 1} OF {constellationNodes.length}
+              </span>
+            </div>
           </div>
 
           {/* Right: Selected Node Detail */}
           <div className="lg:col-span-5 flex flex-col justify-center">
+            {/* Unified Milestone Selector Bar (Accessible with keyboard tabs/arrows) */}
+            <div
+              role="tablist"
+              aria-label="Leadership Milestones"
+              className="flex flex-wrap items-center gap-1.5 mb-5 pb-3 border-b border-[rgba(255,255,255,0.06)]"
+            >
+              <span className="font-mono text-[0.6875rem] text-[var(--color-muted-dim)] mr-1">
+                RECORD:
+              </span>
+              {constellationNodes.map((n, i) => (
+                <button
+                  key={n.id}
+                  role="tab"
+                  aria-selected={activeAchievementIndex === i}
+                  type="button"
+                  onClick={() => setActiveAchievementIndex(i)}
+                  onKeyDown={(e) => {
+                    if (e.key === "ArrowRight") {
+                      setActiveAchievementIndex(
+                        (i + 1) % constellationNodes.length
+                      );
+                    } else if (e.key === "ArrowLeft") {
+                      setActiveAchievementIndex(
+                        (i - 1 + constellationNodes.length) %
+                          constellationNodes.length
+                      );
+                    }
+                  }}
+                  className={`font-mono text-xs px-2.5 py-1 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] ${
+                    activeAchievementIndex === i
+                      ? "text-white bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/50 font-bold"
+                      : "text-[var(--color-muted)] hover:text-white bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.06)]"
+                  }`}
+                  aria-label={`Select ${n.title}`}
+                >
+                  0{i + 1}
+                </button>
+              ))}
+            </div>
+
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeAchievement.id}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="space-y-4"
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="space-y-3.5"
               >
-                <div className="flex items-center gap-3">
-                  <span className="font-mono text-xs text-[var(--color-primary)] uppercase tracking-wider">
+                <div className="flex items-center gap-2.5">
+                  <span className="font-mono text-xs text-[var(--color-primary)] uppercase tracking-wider font-semibold">
                     {activeAchievement.category}
                   </span>
                   <span className="text-[var(--color-muted-dim)]">·</span>
@@ -683,33 +839,16 @@ export default function ExperienceSection() {
                   className="text-[var(--color-text)] font-bold tracking-tight"
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: "clamp(1.5rem, 3vw, 2.25rem)",
-                    lineHeight: 1.15,
+                    fontSize: "clamp(1.25rem, 2.2vw, 1.625rem)",
+                    lineHeight: 1.25,
                   }}
                 >
                   {activeAchievement.title}
                 </h4>
 
-                <p className="text-base text-[var(--color-text-secondary)] leading-relaxed max-w-lg">
+                <p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed max-w-xl">
                   {activeAchievement.detail}
                 </p>
-
-                {/* Sub-selectors */}
-                <div className="flex flex-wrap gap-2 pt-4 border-t border-[rgba(255,255,255,0.06)]">
-                  {constellationNodes.map((n, i) => (
-                    <button
-                      key={n.id}
-                      onClick={() => setActiveAchievementIndex(i)}
-                      data-magnetic
-                      className={`font-mono text-[0.6875rem] px-2.5 py-1 rounded transition-all duration-300 ${activeAchievementIndex === i
-                          ? "text-[var(--color-text)] bg-[rgba(59,130,246,0.15)] border border-[rgba(59,130,246,0.3)] shadow-[0_0_8px_rgba(59,130,246,0.2)]"
-                          : "text-[var(--color-muted)] hover:text-[var(--color-text)]"
-                        }`}
-                    >
-                      0{i + 1}
-                    </button>
-                  ))}
-                </div>
               </motion.div>
             </AnimatePresence>
           </div>
@@ -718,4 +857,3 @@ export default function ExperienceSection() {
     </div>
   );
 }
-
