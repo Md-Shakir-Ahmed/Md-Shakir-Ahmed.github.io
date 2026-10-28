@@ -37,11 +37,11 @@ export default function ProjectGraph() {
   };
 
   const categoryColors: Record<string, string> = {
-    Government: "#38BDF8",
-    Enterprise: "#3B82F6",
-    Product: "#34D399",
-    Identity: "#A78BFA",
-    ML: "#F59E0B",
+    Government: "#0284c7",
+    Enterprise: "#2563eb",
+    Product: "#059669",
+    Identity: "#7c3aed",
+    ML: "#d97706",
   };
 
   const activeProject =
@@ -50,62 +50,147 @@ export default function ProjectGraph() {
   const hoveredNode = projects.find((p) => p.id === hoveredNodeId);
 
   return (
-    <div className="w-full">
+    <div className="w-full" style={{ background: "#ffffff", color: "#0f172a" }}>
       {/* Stage subhead */}
-      <div ref={chipRef} className="flex items-center gap-3 mb-8" style={{ opacity: 0 }}>
-        <span className="font-mono text-xs text-[var(--color-primary)] font-semibold tracking-wider">
-          04 // DATA
+      <div ref={chipRef} className="flex items-center gap-3 mb-4">
+        <span
+          className="font-semibold tracking-wider"
+          style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem", color: "#059669" }}
+        >
+          04
         </span>
-        <div className="w-12 h-px bg-[rgba(255,255,255,0.12)]" />
-        <span className="font-mono text-[0.6875rem] text-[var(--color-muted)] tracking-widest uppercase">
-          SYSTEM RECORDS & SPATIAL NODE GRAPH
+        <div className="w-10 h-px bg-slate-300" />
+        <span
+          className="tracking-widest uppercase font-semibold"
+          style={{ fontFamily: "var(--font-mono)", fontSize: "0.625rem", color: "#64748b" }}
+        >
+          System Records & Spatial Node Graph
         </span>
       </div>
 
       <h2
         ref={headlineRef}
-        className="mb-6 text-[var(--color-text)] max-w-4xl"
+        className="mb-4 max-w-4xl"
         style={{
           fontFamily: "var(--font-display)",
-          fontSize: "clamp(2.5rem, 5.5vw, 4.25rem)",
-          lineHeight: 1.08,
+          fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)",
+          lineHeight: 1.12,
           letterSpacing: "-0.03em",
           perspective: "600px",
+          color: "#0f172a",
         }}
       >
-        <span className="word inline-block" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", opacity: 0 }}>Verified</span>{" "}
-        <span className="word inline-block" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", opacity: 0 }}>system</span>{" "}
-        <span className="word inline-block" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", opacity: 0 }}>records</span>{" "}
-        <span className="word inline-block" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", opacity: 0 }}>&</span>{" "}
-        <span className="word inline-block text-gradient" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", opacity: 0 }}>node&nbsp;architecture.</span>
+        <span className="word inline-block" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", color: "#0f172a" }}>Verified</span>{" "}
+        <span className="word inline-block" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", color: "#0f172a" }}>system</span>{" "}
+        <span className="word inline-block" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", color: "#0f172a" }}>records</span>{" "}
+        <span className="word inline-block" style={{ willChange: "transform, opacity", transformOrigin: "center bottom", color: "#0f172a" }}>&</span>{" "}
+        <span
+          className="word inline-block"
+          style={{
+            willChange: "transform, opacity",
+            transformOrigin: "center bottom",
+            background: "linear-gradient(135deg, #059669, #10b981)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
+          node&nbsp;architecture.
+        </span>
       </h2>
 
-      <p className="text-[var(--color-text-secondary)] mb-16 max-w-3xl text-base sm:text-lg leading-relaxed">
+      <p className="mb-6 max-w-3xl text-sm sm:text-base leading-relaxed" style={{ color: "#334155" }}>
         Projects in this system exist as data nodes within an interconnected
         graph. Connections indicate shared architecture patterns, identity
         tokens, or business integrations. Select any node or project to unpack
         its architectural dossier.
       </p>
 
-      {/* ─── Desktop Interactive Node Graph Canvas ─── */}
+      {/* ─── Desktop Interactive Node Graph Canvas with Smart Proportions ─── */}
       <div
         ref={graphRef}
-        className="hidden md:block mb-16 p-6 sm:p-8 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] relative overflow-hidden"
-        style={{ opacity: 0 }}
+        className="hidden md:block group"
+        style={{
+          marginTop: "1.25rem",
+          marginBottom: "2.5rem",
+          padding: "1rem 1.25rem 1.25rem 1.25rem",
+          borderRadius: "0.875rem",
+          background: "#f8fafc",
+          border: "1px solid #e2e8f0",
+          position: "relative",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+          transition: "all 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = "#cbd5e1";
+          e.currentTarget.style.boxShadow = "0 8px 24px -4px rgba(0,0,0,0.05)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = "#e2e8f0";
+          e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.03)";
+        }}
       >
-        <div className="flex items-center justify-between pb-4 mb-4 border-b border-[rgba(255,255,255,0.06)]">
-          <span className="font-mono text-xs text-[var(--color-muted)] tracking-wider">
-            INTERACTIVE GRAPH // HOVER TO TRACE CONNECTIONS · CLICK TO INSPECT
-          </span>
+        {/* Top Header Bar with Smart Spacing */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingBottom: "0.75rem",
+            marginBottom: "0.875rem",
+            borderBottom: "1px solid #e2e8f0",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#059669", display: "inline-block" }} />
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.6875rem",
+                color: "#64748b",
+                letterSpacing: "0.1em",
+                fontWeight: 600,
+                textTransform: "uppercase",
+              }}
+            >
+              Interactive Graph // Hover to Trace · Click to Inspect
+            </span>
+          </div>
 
-          <span className="font-mono text-xs text-[var(--color-primary)]">
+          <span
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.6875rem",
+              fontWeight: 700,
+              color: "#047857",
+              background: "#ecfdf5",
+              border: "1px solid #a7f3d0",
+              padding: "0.2rem 0.65rem",
+              borderRadius: "0.375rem",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+            }}
+          >
             {hoveredNode
-              ? `FOCUSED: ${hoveredNode.shortName}`
-              : `ACTIVE: ${activeProject.shortName}`}
+              ? `Focused: ${hoveredNode.shortName}`
+              : `Active: ${activeProject.shortName}`}
           </span>
         </div>
 
-        <div className="relative w-full aspect-[16/8] max-h-[420px] bg-[var(--color-bg)] rounded-2xl border border-[rgba(255,255,255,0.04)]">
+        {/* SVG Canvas Inner Box */}
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            maxHeight: "400px",
+            background: "#ffffff",
+            borderRadius: "0.75rem",
+            border: "1px solid #e2e8f0",
+            boxShadow: "0 1px 2px rgba(0,0,0,0.02)",
+            overflow: "hidden",
+          }}
+          className="aspect-[16/8]"
+        >
           <svg viewBox="0 0 800 420" className="w-full h-full select-none">
             <defs>
               <pattern
@@ -118,19 +203,19 @@ export default function ProjectGraph() {
                   cx="1"
                   cy="1"
                   r="1"
-                  fill="rgba(255,255,255,0.04)"
+                  fill="#cbd5e1"
                 />
               </pattern>
               {/* Glow filters for different categories */}
               <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feGaussianBlur stdDeviation="3" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
               <filter id="glow-strong" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="6" result="blur" />
+                <feGaussianBlur stdDeviation="5" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
@@ -163,10 +248,10 @@ export default function ProjectGraph() {
                     y2={targetCoord.y}
                     stroke={
                       isConnected
-                        ? categoryColors[sourceProject.category] || "#3B82F6"
-                        : "rgba(255, 255, 255, 0.06)"
+                        ? categoryColors[sourceProject.category] || "#059669"
+                        : "#e2e8f0"
                     }
-                    strokeWidth={isConnected ? "2" : "1"}
+                    strokeWidth={isConnected ? "2.5" : "1"}
                     strokeDasharray={isConnected ? "6 3" : "2 3"}
                     filter={isConnected ? "url(#glow-blue)" : undefined}
                     className="transition-all duration-500"
@@ -182,7 +267,7 @@ export default function ProjectGraph() {
 
               const isSelected = focusedProjectId === project.id;
               const isHovered = hoveredNodeId === project.id;
-              const color = categoryColors[project.category] || "#3B82F6";
+              const color = categoryColors[project.category] || "#059669";
 
               return (
                 <g
@@ -201,12 +286,12 @@ export default function ProjectGraph() {
                         fill="none"
                         stroke={color}
                         strokeWidth="1"
-                        strokeOpacity="0.3"
+                        strokeOpacity="0.4"
                         className="animate-ping"
                       />
                       <circle
                         r="28"
-                        fill={`${color}08`}
+                        fill={`${color}12`}
                         filter="url(#glow-strong)"
                       />
                     </>
@@ -215,10 +300,10 @@ export default function ProjectGraph() {
                   {/* Node Circle */}
                   <circle
                     r={isSelected ? "24" : "18"}
-                    fill={isSelected ? `${color}30` : "#0A0A10"}
+                    fill={isSelected ? `${color}25` : "#ffffff"}
                     stroke={color}
                     strokeWidth={isSelected ? "2.5" : "1.5"}
-                    strokeOpacity={isSelected || isHovered ? 1 : 0.4}
+                    strokeOpacity={isSelected || isHovered ? 1 : 0.8}
                     className="transition-all duration-300"
                   />
 
@@ -228,12 +313,12 @@ export default function ProjectGraph() {
                   {/* Label */}
                   <text
                     y={isSelected ? "38" : "32"}
-                    fill={isSelected ? "#FFFFFF" : "#888888"}
+                    fill={isSelected ? "#0f172a" : "#475569"}
                     fontSize={isSelected ? "11" : "10"}
                     fontFamily="var(--font-mono)"
-                    fontWeight={isSelected ? "600" : "400"}
+                    fontWeight={isSelected ? "700" : "500"}
                     textAnchor="middle"
-                    className="transition-all duration-200"
+                    className="transition-all duration-200 select-none"
                   >
                     {project.shortName}
                   </text>
@@ -245,48 +330,78 @@ export default function ProjectGraph() {
       </div>
 
       {/* ─── Editorial Architectural Dossier ─── */}
-      <div className="pt-8 border-t border-[rgba(255,255,255,0.08)]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-          {/* Left Column: Project Index Rail */}
-          <div ref={projectListRef} className="lg:col-span-5 flex flex-col space-y-2">
-            <span className="font-mono text-xs text-[var(--color-primary)] uppercase tracking-widest mb-4 block">
-              // Project Directory
+      <div className="pt-8 border-t border-slate-200" style={{ marginTop: "2rem" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* Left Column: Project Index Rail with Modern Hover Effects */}
+          <div ref={projectListRef} className="lg:col-span-5 flex flex-col space-y-1.5">
+            <span
+              className="font-mono text-xs uppercase tracking-widest mb-3 block font-bold"
+              style={{ color: "#059669" }}
+            >
+              Project Directory
             </span>
 
             {projects.map((p, index) => {
               const isSelected = p.id === focusedProjectId;
-              const color = categoryColors[p.category] || "#3B82F6";
+              const color = categoryColors[p.category] || "#059669";
               return (
                 <button
                   key={p.id}
                   onClick={() => setFocusedProjectId(p.id)}
                   data-magnetic
-                  className={`project-item flex items-center justify-between p-3.5 rounded-xl text-left cursor-pointer transition-all duration-300 ${
-                    isSelected
-                      ? "text-[var(--color-text)] border"
-                      : "text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[rgba(255,255,255,0.03)] border border-transparent"
-                  }`}
-                  style={
-                    isSelected
-                      ? {
-                          backgroundColor: `${color}12`,
-                          borderColor: `${color}40`,
-                        }
-                      : {}
-                  }
+                  className="project-item flex items-center justify-between text-left cursor-pointer"
+                  style={{
+                    padding: "0.75rem 1rem",
+                    borderRadius: "0.75rem",
+                    transition: "all 0.22s cubic-bezier(0.16, 1, 0.3, 1)",
+                    border: isSelected ? "1px solid #10b981" : "1px solid transparent",
+                    background: isSelected ? "#ecfdf5" : "transparent",
+                    boxShadow: isSelected ? "0 2px 8px rgba(16, 185, 129, 0.08)" : "none",
+                    transform: isSelected ? "translateX(3px)" : "none",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.background = "#f8fafc";
+                      e.currentTarget.style.borderColor = "#cbd5e1";
+                      e.currentTarget.style.transform = "translateX(3px)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.background = "transparent";
+                      e.currentTarget.style.borderColor = "transparent";
+                      e.currentTarget.style.transform = "translateX(0)";
+                    }
+                  }}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs text-[var(--color-muted-dim)]">
+                  <div className="flex items-center gap-2.5">
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.75rem",
+                        color: isSelected ? "#059669" : "#64748b",
+                        fontWeight: isSelected ? 700 : 500,
+                      }}
+                    >
                       0{index + 1}
                     </span>
-                    <span className="font-medium text-sm">{p.name}</span>
+                    <span
+                      style={{
+                        fontSize: "0.875rem",
+                        fontWeight: isSelected ? 700 : 500,
+                        color: isSelected ? "#0f172a" : "#334155",
+                      }}
+                    >
+                      {p.name}
+                    </span>
                   </div>
 
                   <span
-                    className="font-mono text-[0.625rem] px-2 py-0.5 rounded uppercase"
+                    className="font-mono text-[0.625rem] px-2 py-0.5 rounded uppercase font-bold"
                     style={{
                       color,
                       backgroundColor: `${color}15`,
+                      border: `1px solid ${color}30`,
                     }}
                   >
                     {p.category}
@@ -296,37 +411,58 @@ export default function ProjectGraph() {
             })}
           </div>
 
-          {/* Right Column: Deep Architectural Dossier */}
-          <div ref={dossierRef} className="lg:col-span-7 flex flex-col justify-between">
+          {/* Right Column: Deep Architectural Dossier Card with Smart Padding & Modern Hover */}
+          <div
+            ref={dossierRef}
+            className="lg:col-span-7 flex flex-col justify-between"
+            style={{
+              background: "#ffffff",
+              border: "1px solid #e2e8f0",
+              borderRadius: "1rem",
+              padding: "1.75rem 2rem",
+              boxShadow: "0 4px 16px -2px rgba(0,0,0,0.04)",
+              transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-3px)";
+              e.currentTarget.style.borderColor = "#a7f3d0";
+              e.currentTarget.style.boxShadow = "0 12px 28px -6px rgba(16, 185, 129, 0.1)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.borderColor = "#e2e8f0";
+              e.currentTarget.style.boxShadow = "0 4px 16px -2px rgba(0,0,0,0.04)";
+            }}
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeProject.id}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="space-y-6"
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="space-y-5"
               >
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <span
-                      className="font-mono text-xs uppercase tracking-wider"
+                      className="font-mono text-xs uppercase tracking-wider font-bold"
                       style={{
                         color:
-                          categoryColors[activeProject.category] || "#3B82F6",
+                          categoryColors[activeProject.category] || "#059669",
                       }}
                     >
                       {activeProject.categoryLabel}
                     </span>
-                    <span className="text-[var(--color-muted-dim)]">·</span>
-                    <span className="font-mono text-xs text-[var(--color-muted)]">
+                    <span className="text-slate-400">·</span>
+                    <span className="font-mono text-xs text-slate-500 font-medium">
                       {activeProject.role}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-5 mb-4">
+                  <div className="flex items-center gap-4 mb-3">
                     {activeProject.logo && (
-                      <div className="relative shrink-0 w-16 h-16 rounded-xl overflow-hidden border border-[rgba(255,255,255,0.1)] shadow-lg bg-[rgba(255,255,255,0.02)] p-1">
+                      <div className="relative shrink-0 w-14 h-14 rounded-xl overflow-hidden border border-slate-200 shadow-xs bg-white p-1">
                         <Image 
                           src={getAssetPath(activeProject.logo)} 
                           alt={`${activeProject.shortName} Logo`} 
@@ -336,55 +472,55 @@ export default function ProjectGraph() {
                       </div>
                     )}
                     <h3
-                      className="text-2xl sm:text-3xl text-[var(--color-text)] font-bold tracking-tight"
+                      className="text-xl sm:text-2xl text-slate-900 font-bold tracking-tight"
                       style={{ fontFamily: "var(--font-display)" }}
                     >
                       {activeProject.name}
                     </h3>
                   </div>
 
-                  <p className="text-base text-[var(--color-text-secondary)] leading-relaxed mb-6">
+                  <p className="text-sm sm:text-base text-slate-700 leading-relaxed mb-4">
                     {activeProject.summary}
                   </p>
                 </div>
 
                 {/* Problem vs Architecture Solution */}
-                <div className="space-y-4 pt-4 border-t border-[rgba(255,255,255,0.06)]">
+                <div className="space-y-4 pt-4 border-t border-slate-200">
                   <div>
-                    <span className="font-mono text-xs text-[var(--color-muted)] uppercase tracking-wider block mb-1">
-                      // The Architectural Challenge
+                    <span className="font-mono text-xs text-slate-500 uppercase tracking-wider block mb-1 font-semibold">
+                      The Architectural Challenge
                     </span>
-                    <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                    <p className="text-sm text-slate-700 leading-relaxed">
                       {activeProject.problem}
                     </p>
                   </div>
 
                   <div>
                     <span
-                      className="font-mono text-xs uppercase tracking-wider block mb-1"
+                      className="font-mono text-xs uppercase tracking-wider block mb-1 font-semibold"
                       style={{
                         color:
-                          categoryColors[activeProject.category] || "#3B82F6",
+                          categoryColors[activeProject.category] || "#059669",
                       }}
                     >
-                      // Implemented Solution
+                      Implemented Solution
                     </span>
-                    <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                    <p className="text-sm text-slate-700 leading-relaxed">
                       {activeProject.architecture}
                     </p>
                   </div>
                 </div>
 
                 {/* Tech Stack Tokens */}
-                <div className="pt-4 border-t border-[rgba(255,255,255,0.06)]">
-                  <span className="font-mono text-[0.6875rem] text-[var(--color-muted)] uppercase tracking-wider block mb-2">
+                <div className="pt-4 border-t border-slate-200">
+                  <span className="font-mono text-[0.6875rem] text-slate-500 uppercase tracking-wider block mb-2 font-semibold">
                     Engineered With:
                   </span>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5">
                     {activeProject.technologies.map((t) => (
                       <span
                         key={t}
-                        className="px-2.5 py-1 rounded bg-[var(--color-surface)] border border-[var(--color-border)] font-mono text-[0.6875rem] text-[var(--color-text)] hover:border-[var(--color-primary)] transition-colors"
+                        className="px-2.5 py-1 rounded-md bg-slate-50 border border-slate-200 font-mono text-[0.6875rem] text-slate-800 font-medium hover:border-emerald-500 hover:text-emerald-700 hover:bg-emerald-50 transition-all cursor-default"
                       >
                         {t}
                       </span>
@@ -392,13 +528,32 @@ export default function ProjectGraph() {
                   </div>
                 </div>
 
-                {/* Unpack Full Case Study Modal Button */}
-                <div className="pt-4">
+                {/* Unpack Full Case Study Modal Button with Modern Pill Interaction */}
+                <div className="pt-3">
                   <button
                     onClick={() => setSelectedModalProject(activeProject)}
                     data-magnetic
                     data-cursor-label="VIEW"
-                    className="inline-flex items-center gap-2 font-mono text-xs text-[var(--color-primary)] hover:text-[var(--color-text)] transition-colors cursor-pointer group"
+                    className="inline-flex items-center gap-2 font-mono text-xs font-bold transition-all cursor-pointer group"
+                    style={{
+                      background: "#ecfdf5",
+                      border: "1px solid #a7f3d0",
+                      color: "#047857",
+                      padding: "0.55rem 1.15rem",
+                      borderRadius: "0.5rem",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "#059669";
+                      e.currentTarget.style.color = "#ffffff";
+                      e.currentTarget.style.borderColor = "#059669";
+                      e.currentTarget.style.boxShadow = "0 4px 12px rgba(5, 150, 105, 0.25)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "#ecfdf5";
+                      e.currentTarget.style.color = "#047857";
+                      e.currentTarget.style.borderColor = "#a7f3d0";
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
                   >
                     <span>
                       [ UNPACK FULL CASE STUDY SPECIFICATIONS ]
@@ -422,4 +577,3 @@ export default function ProjectGraph() {
     </div>
   );
 }
-

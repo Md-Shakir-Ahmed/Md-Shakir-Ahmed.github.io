@@ -506,6 +506,51 @@ a {
   }
 }
 
+/* About section full-width light background override */
+#about {
+  --color-text: #0f172a;
+  --color-text-secondary: #334155;
+  --color-muted: #64748b;
+  --color-muted-dim: #94a3b8;
+  --color-border: #e2e8f0;
+  --color-surface: #f8fafc;
+  --color-surface-elevated: #ffffff;
+  border-top-color: #e2e8f0;
+}
+
+#about p {
+  color: #334155 !important;
+}
+
+#about strong,
+#about b {
+  color: #0f172a !important;
+}
+
+/* Projects section full-width light background override */
+#projects {
+  --color-text: #0f172a;
+  --color-text-secondary: #334155;
+  --color-muted: #64748b;
+  --color-muted-dim: #94a3b8;
+  --color-border: #e2e8f0;
+  --color-border-active: #10b981;
+  --color-surface: #f8fafc;
+  --color-surface-elevated: #ffffff;
+  --color-surface-modal: #ffffff;
+  --color-bg: #ffffff;
+  border-top-color: #e2e8f0;
+}
+
+#projects p {
+  color: #334155 !important;
+}
+
+#projects strong,
+#projects b {
+  color: #0f172a !important;
+}
+
 #hero {
   padding-top: var(--space-16);
   padding-bottom: var(--space-12);

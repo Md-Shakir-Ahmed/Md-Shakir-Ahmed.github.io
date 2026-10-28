@@ -95,6 +95,7 @@ export default function Home() {
           <HeroSection onEnterSystem={handleEnterSystem} />
 
           {/* 02 // API — Engineering Identity & Mindset */}
+          <div style={{ background: "#ffffff", width: "100%" }}>
           <section
             id="about"
             className="system-section"
@@ -102,6 +103,7 @@ export default function Home() {
           >
             <AboutSection />
           </section>
+          </div>
 
           {/* 03 // IDENTITY — Stack & IdentiCore Architecture */}
           <section
@@ -113,19 +115,27 @@ export default function Home() {
             <IdentiCoreArchitecture />
           </section>
 
-          {/* 04 // DATA — Project Graph & Experience */}
+          {/* 04 // DATA — Project Graph & Reel */}
+          <div style={{ background: "#ffffff", width: "100%" }}>
+            <section
+              id="projects"
+              className="system-section"
+              aria-label="Projects and Telemetry"
+            >
+              <ProjectGraph />
+              <div className="mt-32">
+                <ProjectReel />
+              </div>
+            </section>
+          </div>
+
+          {/* 04.5 // EXPERIENCE — Career & Achievements */}
           <section
-            id="projects"
+            id="experience"
             className="system-section"
-            aria-label="Projects and Experience"
+            aria-label="Experience and Career"
           >
-            <ProjectGraph />
-            <div className="mt-32">
-              <ProjectReel />
-            </div>
-            <div className="mt-32 sm:mt-40 pt-16 border-t border-[var(--color-border)]">
-              <ExperienceSection />
-            </div>
+            <ExperienceSection />
           </section>
 
           {/* 05 // RESPONSE — Handshake & Direct Endpoints */}
